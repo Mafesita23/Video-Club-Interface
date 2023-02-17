@@ -8,14 +8,33 @@ import Movies from './components/Forms.jsx/Movies';
 
 function App() {
 	const [theme, setTheme] = useState(null);
+	const [movie, setMovie] = useState([]);
+
 
 	useEffect(() => {
+
+		const getMovies = async () => {
+			const movie = await fetch("")
+			const res = await movie.json()
+			setMovie(res)
+		}
 		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
 			setTheme('dark');
 		} else {
 			setTheme('light');
 		}
+
+		getMovies();
 	}, []);
+
+const addData = (item) => {
+	const body = JSON.stringify(item);
+
+	const request = {
+		method: 'POST',
+		headers: {'Content-Type':'application/json'},
+		body: body
+	};
 
 	const handleThemeSwitch = (e) => {
 		setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -39,10 +58,7 @@ function App() {
 				
 				<Routes>
 					<Route path="/" exact element={<Table />} />
-					<Route path="/home" exact element={<Table />} />
-					<Route path="/movie/:id" exact element={<Movies />} />
-					<Route path="/add-movie" exact element={<Add />} />
-					<Route path="/edit-movie/:id" exact element={<Edit />} />
+					<Route path="/forms" element={<Movies movieData={movieData} setMovie={setMovie} addData={addData}/>}/>
 				</Routes>
 				
 
@@ -63,7 +79,7 @@ function App() {
 				</div>
 			</>
 		</div>
-	)
+		)
+	}
 }
-
 export default App

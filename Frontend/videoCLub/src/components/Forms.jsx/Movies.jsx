@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -10,7 +11,9 @@ const movieList = ({item, infoMovie, setMovie, deleteMovies}) =>{
     const data = await response.json();
   }
   fetchData();
-  setMovie(())
+  setMovie((moviesOn) => moviesOn.filter((deleteReq) =>{
+    return deleteReq._id !== id;
+  }))
 
 
   const handleDeleteMovie = () => {
@@ -119,4 +122,4 @@ return (
   )
 }
 
-export default Movies;
+export default movieList;
