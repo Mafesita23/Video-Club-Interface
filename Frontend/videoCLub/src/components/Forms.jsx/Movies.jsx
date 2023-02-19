@@ -2,16 +2,16 @@ import React from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import swal from 'sweetalert'
+import swal from 'sweetalert';
 
-const movieList = ({item, infoMovie, setMovie, deleteMovies}) =>{
+const movieList = ({item, infoMovie, setMovieInfo, deleteMovies}) =>{
 
   const fetchData = async () => {
     const response = await fetch("",);
     const data = await response.json();
   }
   fetchData();
-  setMovie((moviesOn) => moviesOn.filter((deleteReq) =>{
+  setMovieInfo((moviesOn) => moviesOn.filter((deleteReq) =>{
     return deleteReq._id !== id;
   }))
 
@@ -37,7 +37,7 @@ const movieList = ({item, infoMovie, setMovie, deleteMovies}) =>{
 
     useEffect(() => {
         axios.get(`mongodb+srv://Administrador:Admin1342**@videoclubdatabase.ry0toej.mongodb.net/?retryWrites=true&w=majority${id}`).then((res) => {
-            setMovie(res.data);
+            setMovieInfo(res.data);
         });
     }, []);
 
@@ -112,7 +112,7 @@ return (
       {
         infoMovie.map((item) =>{
           return(
-            <MovieList item={item} key={item._id} setMovie={setMovie}/>
+            <MovieList item={item} key={item._id} setMovieInfo={setMovie}/>
           )
         })
       }

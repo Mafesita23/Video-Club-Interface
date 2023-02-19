@@ -2,8 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Edit() {
-    const [title, setTitle] = useState("");
+function Edit(item, setMovieInfo, updateMovie) {
+
+    const [info, setInfo] = useState(item);
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setInfo(value => ({ ...value, [name]: value }));
+    };
+
+    /* const [title, setTitle] = useState("");
     const [year, setYear] = useState("");
     const [time, setTime] = useState("");
     const [language, setLanguage] = useState("");
@@ -11,10 +19,10 @@ function Edit() {
     const [country, setCountry] = useState("");
     // const [director, setDirector] = useState("");
     // const [actor, setActor] = useState("");
-    const [genreTitle, setGenreTitle] = useState("");
-    
+    const [genreTitle, setGenreTitle] = useState(""); */
 
-    useEffect(() => {
+
+    /* useEffect(() => {
         axios.get(`mongodb+srv://Administrador:Admin1342**@videoclubdatabase.ry0toej.mongodb.net/videoClubDataBase?retryWrites=true&w=majority`).then((res) => {
             setTitle(res.data.title);
             setYear(res.data.year);
@@ -24,9 +32,45 @@ function Edit() {
             setCountry(res.data.country)
             setGenreTitle(res.data.genretitle)
         });
-    }, []);
+    }, []); */
 
-    const navigate = useNavigate();
+    const handleSubmit = () => {
+        item.title = value.title;
+        item.year = value.year;
+        item.time = value.time;
+        item.language = value.language;
+        item.country = value.country;
+        item.date = value.date;
+
+        if (directorN.trim() !== "" && directorLn.trim() !== "") {
+            item.director = [{ ...item.director, name: directorName, lastname: directorLname }]
+        }
+
+        //Add Actor
+        item.actor = [...item.actor, { name: actorName, lastname: actorLname }]
+        
+        updateMovie(item._id, item);
+    }
+
+    const [title, setTitle] = useState("");
+
+    const [year, setYear] = useState("");
+
+    const [time, setTime] = useState("");
+
+    const [language, setLanguage] = useState("");
+
+    const [country, setCountry] = useState("");
+
+    const [date, setDate] = useState("");
+
+    const [directorName, setDirectorName] = useState("");
+
+    const [directorLname, setDirectorLname] = useState("");
+
+    const [actorName, setActorName] = useState("");
+
+    const [actorLname, setActorLname] = useState("");
 
     const data = {
         title: title,
@@ -52,68 +96,89 @@ function Edit() {
     }
 
     function Update(e) {
-                e.preventDefault();
-                axios.put(`mongodb+srv://Administrador:Admin1342**@videoclubdatabase.ry0toej.mongodb.net/videoClubDataBase?retryWrites=true&w=majority`, data).then(navigate("/"));
-            }
-    return(
-        <div className = "w-screen h-full flex flex-col justify-center items-center mt-16" >
+        e.preventDefault();
+        axios.put(`mongodb+srv://Administrador:Admin1342**@videoclubdatabase.ry0toej.mongodb.net/videoClubDataBase?retryWrites=true&w=majority`, data).then(navigate("/"));
+    }
+    return (
+        <div className="w-screen h-full flex flex-col justify-center items-center mt-16" >
             <h2 className="text-2xl font-bold">User Details</h2>
             <form className="w-[50%] h-full flex flex-col mt-2">
                 <input
-                    value={title}
+                    value={value.title}
                     onChange={(e) => setTitle(e.target.value)}
                     className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
                     type="text"
-                    placeholder="Ingrese el título de la película"
+                    placeholder = {item.title}
                 />
                 <input
-                    value={year}
+                    value={value.year}
                     onChange={(e) => setYear(e.target.value)}
                     className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
                     type="email"
                     pattern="[0-9]"
-                    placeholder="Ingrese el año de estreno de la película"
+                    placeholder = {item.year}
                 />
                 <input
-                    value={time}
+                    value={value.time}
                     onChange={(e) => setTime(e.target.value)}
                     className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
                     type="phone"
                     pattern="[0-9]"
-                    placeholder="Ingrese la duración en minutos"
+                    placeholder = {item.time}
                 />
                 <input
-                    value={language}
+                    value={value.language}
                     onChange={(e) => setLanguage(e.target.value)}
                     className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
                     type="phone"
-                    placeholder="Ingrese el lenguaje"
+                    placeholder = {item.language}
                 />
                 <input
-                    value={date}
+                    value={value.date}
                     onChange={(e) => setDate(e.target.value)}
                     className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
                     type="phone"
-                    placeholder="dd/MM/AAAA"
+                    placeholder = {item.date}
                 />
                 <input
-                    value={country}
+                    value={value.country}
                     onChange={(e) => setCountry(e.target.value)}
                     className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
                     type="phone"
-                    placeholder="Ingrese el país de origen"
+                    placeholder = {item.country}
                 />
                 <input
-                    value={genreTitle}
-                    onChange={(e) => setGenre(e.target.value)}
+                    value={value.directorName}
+                    onChange={(e) => setDirectorName(e.target.value)}
                     className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
                     type="phone"
-                    placeholder="Ingrese el género"
+                    placeholder = {item.directorName}
+                />
+                <input
+                    value={value.directorLname}
+                    onChange={(e) => setDirectorLname(e.target.value)}
+                    className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
+                    type="phone"
+                    placeholder = {item.directorLname}
+                />
+                <input
+                    value={value.actorName}
+                    onChange={(e) => setActorName(e.target.value)}
+                    className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
+                    type="phone"
+                    placeholder = {item.actorName}
+                />
+                <input
+                    value={value.actorLname}
+                    onChange={(e) => setActorLname(e.target.value)}
+                    className="bg-white/10 outline-none font-normal border border-zinc-400 py-6 pl-6 mt-4"
+                    type="phone"
+                    placeholder = {item.actorLname}
                 />
                 <button
                     className="bg-teal-600 outline-none font-bold border text-white border-zinc-400 py-4 pl-4 mt-4"
                     type="submit"
-                    onClick={Update}
+                    onSubmit={handleSubmit}
                 >
                     UPDATE MOVIE
                 </button>
